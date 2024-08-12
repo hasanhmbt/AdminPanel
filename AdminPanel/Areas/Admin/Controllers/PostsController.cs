@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AdminPanel.Data;
+using AdminPanel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AdminPanel.Data;
-using AdminPanel.Models;
 
 namespace AdminPanel.Areas.Admin.Controllers
 {
@@ -23,8 +19,14 @@ namespace AdminPanel.Areas.Admin.Controllers
         // GET: Admin/Posts
         public async Task<IActionResult> Index()
         {
-            var adminPanelContext = _context.Posts.Include(p => p.Category);
-            return View(await adminPanelContext.ToListAsync());
+            var adminPanelContext = _context
+                 .Posts
+                .Include(p => p.Category)
+                .Include(p => p.PostsPopularTag)
+                .ThenInclude(p => p.PopularTag)
+                .AsNoTracking()
+                .ToListAsync();
+            return View(await adminPanelContext);
         }
 
         // GET: Admin/Posts/Details/5
@@ -50,6 +52,7 @@ namespace AdminPanel.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["PopularTagPosts"] = new SelectList(_context.PopularTags, "Id", "TagName");
             return View();
         }
 
@@ -58,15 +61,24 @@ namespace AdminPanel.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content,ImageUrl,PublishDate,CategoryId,Id")] Post post)
+        public async Task<IActionResult> Create([Bind("Title,Content,ImageUrl,PublishDate,CategoryId,Id")] Post post, int[] PostPopularTags)
         {
             if (ModelState.IsValid)
             {
+                if (PostPopularTags.Length > 0)
+                {
+                    post.PostsPopularTag = PostPopularTags
+                        .Select(t => new PopularTagPost { PopularTagId = t })
+                        .ToList();
+                }
+
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
+            ViewData["PopularTagPosts"] = new SelectList(_context.PopularTags, "Id", "TagName");
+
             return View(post);
         }
 
@@ -78,12 +90,16 @@ namespace AdminPanel.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.
+                Include(p => p.Category)
+                .Include(p => p.PostsPopularTag)
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
+            ViewData["PostPopularTags"] = new SelectList(_context.PopularTags, "Id", "TagName");
             return View(post);
         }
 

@@ -10,9 +10,11 @@ namespace AdminPanel.Data
         {
         }
 
-        public DbSet<AdminPanel.Models.Category> Categories { get; set; } = default!;
         public DbSet<AdminPanel.Models.Post> Posts { get; set; } = default!;
+        public DbSet<AdminPanel.Models.Category> Categories { get; set; } = default!;
         public DbSet<AdminPanel.Models.PopularTag> PopularTags { get; set; } = default!;
+        public DbSet<AdminPanel.Models.PopularTagPost> PopularTagPost { get; set; } = default!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

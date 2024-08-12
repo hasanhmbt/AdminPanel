@@ -4,48 +4,87 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="container-fluid">
 
-<h4>Post</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublishDate" class="control-label"></label>
-                <input asp-for="PublishDate" class="form-control" />
-                <span asp-validation-for="PublishDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+        </a>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-xl-8 col-lg-7">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="PostsPopularTag" class="control-label"></label>
+                    <select asp-for="PostsPopularTag" class="form-control" asp-items="ViewBag.PostPopularTags">
+                        <option value=""></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label"></label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+                        <option value=""></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageUrl" class="control-label"></label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PublishDate" class="control-label"></label>
+                    <input asp-for="PublishDate" class="form-control" />
+                    <span asp-validation-for="PublishDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label"></label>
+                    <textarea cols="5" rows="5" asp-for="Content" class="form-control"> </textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <button btn-action="edit"></button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
     </div>
 </div>
+@section css {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+@section js {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <script>
+        $(document).ready(function () {
+            $('#CategoryId').select2({
+                placeholder: "Select a category",
+                allowClear: true
+            });
+            $('#PostsPopularTag').select2({
+                placeholder: "Select tags",
+                allowClear: true,
+                multiple: true
+            });
 
+        });
+    </script>
+
+}

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
- 
+
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -58,4 +58,19 @@
     </div>
 
 </div>
- 
+
+
+@section css {
+    <!-- Custom styles for this page -->
+    <link href="~/admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+@section js {
+
+    <!-- Page level plugins -->
+    <script src="~/admin/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/admin/js/demo/datatables-demo.js"></script>
+}

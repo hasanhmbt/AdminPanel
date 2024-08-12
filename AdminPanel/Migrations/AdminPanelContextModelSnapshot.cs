@@ -42,7 +42,7 @@ namespace AdminPanel.Migrations
 
                     b.HasIndex("ParentCategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("AdminPanel.Models.PopularTag", b =>
@@ -60,7 +60,7 @@ namespace AdminPanel.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PopularTags");
+                    b.ToTable("PopularTags", (string)null);
                 });
 
             modelBuilder.Entity("AdminPanel.Models.PopularTagPost", b =>
@@ -75,7 +75,7 @@ namespace AdminPanel.Migrations
 
                     b.HasIndex("PopularTagId");
 
-                    b.ToTable("PopularTagPost");
+                    b.ToTable("PopularTagPost", (string)null);
                 });
 
             modelBuilder.Entity("AdminPanel.Models.Post", b =>
@@ -109,7 +109,7 @@ namespace AdminPanel.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("AdminPanel.Models.Category", b =>

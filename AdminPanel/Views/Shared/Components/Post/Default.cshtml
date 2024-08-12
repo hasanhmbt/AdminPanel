@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Post>
+
+
+
+<div class="widget-title">
+    <h3>Recent Posts</h3>
+</div>
+<div class="widget-detail">
+    @foreach (var post in Model)
+    {
+        <div class="recent-wrap">
+            <div class="recent-post-thumb">
+                <a href="#">
+                    <figure>
+                        <div class="overlay-hover"></div>
+                        <img src="@post.ImageUrl" alt="recent post" class="square-image" />
+                    </figure>
+                </a>
+            </div>
+            <div class="recent-post-detail">
+                <h4>@post.Content</h4>
+                <a href="#">Read more</a>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .square-image {
+        width: 100px;  
+        height: 100px;  
+        object-fit: cover;  
+        border-radius: 5px;  
+    }                        
+    .recent-wrap {           
+        display: flex;       
+        align-items: center; 
+        margin-bottom: 10px; 
+    }                        
+    .recent-post-thumb {     
+        margin-right: 10px;  
+    }
+</style>

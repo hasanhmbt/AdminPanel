@@ -1,0 +1,11 @@
+﻿@model IEnumerable<PopularTag>
+
+<div class="widget-detail">
+    <div class="tagcloud">
+        @foreach (var post in Model)
+        {
+            <a href="#">@post.TagName<span>(5)</span></a>
+
+        }
+    </div>
+</div>

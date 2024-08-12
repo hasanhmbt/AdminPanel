@@ -1,0 +1,25 @@
+﻿
+
+@model IEnumerable<Category>
+
+
+<div class="widget-detail">
+    <ul>
+        @foreach (var category in Model.Where(c => c.ParentCategoryId == null))
+        {
+            <li>
+                <a href="#">@category.Name<span>(2)</span></a>
+
+                @if (category.SubCategories?.Any() == true)
+                {
+                    <ul>
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            <li><a href="#">@subCategory.Name<span>(2)</span></a></li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+</div>

@@ -21,7 +21,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="PostsPopularTag" class="control-label"></label>
-                    <select asp-for="PostsPopularTag" class="form-control" asp-items="ViewBag.PostPopularTags">
+                    <select asp-for="PostsPopularTag" class="form-control" asp-items="ViewBag.PostsPopularTag" multiple="multiple">
                         <option value=""></option>
                     </select>
                 </div>
@@ -83,7 +83,6 @@
                 allowClear: true,
                 multiple: true
             });
-
         });
     </script>
 

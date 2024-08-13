@@ -19,14 +19,14 @@ namespace AdminPanel.Areas.Admin.Controllers
         // GET: Admin/Posts
         public async Task<IActionResult> Index()
         {
-            var adminPanelContext = _context
+            var adminPanelContext = await _context
                  .Posts
                 .Include(p => p.Category)
                 .Include(p => p.PostsPopularTag)
                 .ThenInclude(p => p.PopularTag)
                 .AsNoTracking()
                 .ToListAsync();
-            return View(await adminPanelContext);
+            return View(adminPanelContext);
         }
 
         // GET: Admin/Posts/Details/5
@@ -52,7 +52,7 @@ namespace AdminPanel.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["PopularTagPosts"] = new SelectList(_context.PopularTags, "Id", "TagName");
+            ViewData["PostsPopularTag"] = new SelectList(_context.PopularTags, "Id", "TagName");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace AdminPanel.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content,ImageUrl,PublishDate,CategoryId,Id")] Post post, int[] PostPopularTags)
+        public async Task<IActionResult> Create(Post post, int[] PostPopularTags)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +77,7 @@ namespace AdminPanel.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
-            ViewData["PopularTagPosts"] = new SelectList(_context.PopularTags, "Id", "TagName");
+            ViewData["PostsPopularTag"] = new SelectList(_context.PopularTags, "Id", "TagName");
 
             return View(post);
         }
@@ -99,7 +99,7 @@ namespace AdminPanel.Areas.Admin.Controllers
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
-            ViewData["PostPopularTags"] = new SelectList(_context.PopularTags, "Id", "TagName");
+            ViewData["PostsPopularTag"] = new SelectList(_context.PopularTags, "Id", "TagName");
             return View(post);
         }
 
@@ -108,7 +108,7 @@ namespace AdminPanel.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Content,ImageUrl,PublishDate,CategoryId,Id")] Post post)
+        public async Task<IActionResult> Edit(int id, Post post, int[] PostsPopularTag)
         {
             if (id != post.Id)
             {
@@ -119,6 +119,17 @@ namespace AdminPanel.Areas.Admin.Controllers
             {
                 try
                 {
+                    var exisingTags = _context.PopularTagPost.Where(pt => pt.PostId == post.Id);
+
+                    _context.PopularTagPost.RemoveRange(exisingTags);
+
+                    if (PostsPopularTag != null && PostsPopularTag.Any())
+                    {
+                        post.PostsPopularTag = PostsPopularTag
+                        .Select(t => new PopularTagPost { PopularTagId = t })
+                        .ToList();
+                    }
+
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
@@ -136,6 +147,7 @@ namespace AdminPanel.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
+            ViewData["PostsPopularTag"] = new SelectList(_context.PopularTags, "Id", "TagName");
             return View(post);
         }
 
@@ -176,6 +188,17 @@ namespace AdminPanel.Areas.Admin.Controllers
         private bool PostExists(int id)
         {
             return _context.Posts.Any(e => e.Id == id);
+        }
+
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile[] files, CancellationToken cancellationToken)
+        {
+
+            return View();
         }
     }
 }

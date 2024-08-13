@@ -71,8 +71,7 @@
                                     }
                                     else
                                     {
-                                       
-                                        <text>@Html.Raw(string.Join(" / ", item.PostsPopularTag.Select(t => $"<span class='badge   bg-info p-2 text-white'>{t.PopularTag.TagName}</span>")))</text>
+                                        <text>@Html.Raw(string.Join(" / ", item.PostsPopularTag.Select(t => $"<span class='badge bg-info p-2 text-white'>{t.PopularTag.TagName}</span>")))</text>
                                     }
                                 </td>
                                 <td>

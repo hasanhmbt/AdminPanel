@@ -1,0 +1,86 @@
+﻿@model int
+<div class="container-fluid">
+     
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div id="my-dropzone" class="dropzone">
+                    <img src="~/images/mario.png" alt="logo" />
+                    <div class="dz-default dz-message">
+                        <button class="dz-button" type="button">Lütfen dosyalarınızı bu alana sürükleyiniz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section css {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.css" rel="stylesheet">
+    <style>
+        #my-dropzone { 
+            height: 230px;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            margin: 20px;
+            position: relative;
+            padding:0 10px
+        }
+
+            #my-dropzone img {
+                max-width: 100%;
+                position: absolute;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0.5;
+            }
+
+        .dz-message {
+            margin-top: 160px !important;
+        }
+    </style>
+}
+
+@section js {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.js"></script>
+
+
+  @*   <script>
+           alert(window.location.href)
+      
+         </script>
+ *@
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Eğer #my-dropzone elementine zaten bir Dropzone atanmışsa, yeni bir tane eklemeyin
+            if (Dropzone.instances.length > 0) {
+                Dropzone.instances.forEach(instance => instance.destroy()); // Mevcut instance'ları yok et
+            }
+
+            let dropzone = new Dropzone("#my-dropzone", {
+                paramName:"image",
+                url: "/admin/posts/upload/@Model",  // Gerçek yükleme URL'sini buraya koyabilirsiniz
+                autoProcessQueue: true,   // Otomatik yükleme aktif
+                clickable: true,  // Dropzone alanı tıklanabilir
+                addRemoveLinks: true,  // Dosya silme linki aktif
+                parallelUploads:10, // Aynı anda kaç dosya yükleneceğini belirler
+                maxFileSize:20, // maximum file size (MB)
+                init: function () {
+                    this.on('addedfile', function (file) {
+                        console.log("Dosya eklendi:", file);
+                    });
+                    this.on('dragover', function () {
+                        console.log("Dosya üzerine sürükleniyor");
+                    });
+                    this.on('drop', function (file) {
+                        console.log("Dosya bırakıldı:", file);
+                    });
+                }
+            });
+        });
+    </script>
+}

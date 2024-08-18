@@ -117,11 +117,16 @@
                            asp-area="admin">Category List</a>
 
                         <a class="collapse-item"
-                           asp-action="create"
-                           asp-controller="categories"
-                           asp-area="admin">Create New</a>
+                           asp-action="index"
+                           asp-controller="posts"
+                           asp-area="admin">Post List</a>
 
+                        <a class="collapse-item"
+                           asp-action="index"
+                           asp-controller="populartags"
+                           asp-area="admin">Popular Tag List</a>
 
+               
 
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Other Pages:</h6>

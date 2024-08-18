@@ -67,6 +67,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Elmah.Io.AspNetCore" Version="5.1.66" />
+    <PackageReference Include="ElmahCore" Version="2.1.2" />
+    <PackageReference Include="ElmahCore.Sql" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.6.24327.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-preview.6.24327.4">
       <PrivateAssets>all</PrivateAssets>
@@ -76,9 +79,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="App_Data\ElmahLogs\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\HR\Data\" />
     <Folder Include="Areas\HR\Models\" />
+    <Folder Include="wwwroot\Logs\" />
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -102,5 +108,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
 
 </Project>
